@@ -19,12 +19,15 @@ gulp.task('sass', function(){
     .pipe(gulp.dest('./build/style/'))
 });
 
-gulp.task('html', function(){
-  return gulp.src('./src/*.html')
+gulp.task('server', function(){
+  gulp.src('./src/*.js')
+    .pipe(plumber())
+    .pipe(babel())
+    .pipe(plumber.stop())
     .pipe(gulp.dest('./build/'))
 });
 
-gulp.task('default', ['scripts', 'sass', 'html']);
+gulp.task('default', ['scripts', 'sass', 'server']);
 
 gulp.task('watch', function(){
   gulp.watch('./src/**/*', ['default']);
