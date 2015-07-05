@@ -3,13 +3,13 @@ var gulp = require('gulp'),
     plumber = require('gulp-plumber'),
     sass = require('gulp-sass');
 
-gulp.task('scripts', function(){
-  return gulp.src('./src/js/**')
-    .pipe(plumber())
-    .pipe(babel())
-    .pipe(plumber.stop())
-    .pipe(gulp.dest('./build/js/'));
-});
+//gulp.task('scripts', function(){
+//  return gulp.src('./src/js/**')
+//    .pipe(plumber())
+//    .pipe(babel())
+//    .pipe(plumber.stop())
+//    .pipe(gulp.dest('./build/js/'));
+//});
 
 gulp.task('sass', function(){
   return gulp.src('./src/style/main.scss')
