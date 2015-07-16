@@ -1,0 +1,38 @@
+<nav class="main-nav">
+	<a class="active" href="./">Game</a>
+	<a href="./standings">Standings</a>
+</nav>
+<div class="upload-form">
+  <form id="uploadForm"
+        enctype="multipart/form-data"
+        action="./"
+        method="post"
+        >
+    <label for="uploadField">
+      Upload Image
+    </label>
+    <input id="uploadField" type="file" name="userPhoto" />
+    <input type="submit" value="Go!" name="submit">
+  </form>
+</div>
+<div class="image-display">
+  {{#if photo}}
+  <img src="photos/{{photo.name}}" width="530" height="420" alt="Image to vote" />
+
+  <div class="button-holder">
+    <form action="./cute" method="post">
+      <input type="hidden" name="photo" value="{{photo.name}}" />
+      <input type="submit" value="Cute!" />
+    </form>
+    <form action="./notcute" method="post">
+      <input type="hidden" name="photo" value="{{photo.name}}" />
+      <input type="submit" value="Not Cute!" />
+    </form>
+  </div>
+
+  {{else}}
+
+  <h3>No more photos to vote on! Check out the <a href="./standings">standings</a>.</h3>
+
+  {{/if}}
+</div>
