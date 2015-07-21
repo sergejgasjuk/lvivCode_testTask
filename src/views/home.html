@@ -1,35 +1,41 @@
-<nav>
+<nav class="navigation">
 	<a class="active" href="./">Game</a>
 	<a href="./standings">Standings</a>
 </nav>
-<div style="padding: 25px; margin: auto;">
-    <form id        =  "uploadForm"
-          enctype   =  "multipart/form-data"
-          action    =  "./"
-          method    =  "post"
-            >
-        <input type="file" name="userPhoto" />
-        <input type="submit" value="Upload Image" name="submit">
+<div class="img-upload">
+    <form id="uploadForm"
+          enctype="multipart/form-data"
+          action="./"
+          method="post"
+          >
+      <label for="userImage">Upload Image</label>
+      <input id="userImage" class="hidden" type="file" name="userImage"/>
+      <input class="hidden" type="submit" value="Go!" name="submit">
     </form>
 </div>
+<div class="image-display">
 
+  {{#if photo}}
 
-{{#if photo}}
-	<img src="photos/{{photo.name}}" width="530" height="420" alt="Cat Picture" />
+  <img src="photos/{{photo.name}}" alt="{{photo.name}}" />
 
-	<div class="button-holder">
-		<form action="./cute" method="post">
-			<input type="hidden" name="photo" value="{{photo.name}}" />
-			<input type="submit" value="Cute!" />
-		</form>
-		<form action="./notcute" method="post">
-			<input type="hidden" name="photo" value="{{photo.name}}" />
-			<input type="submit" value="Not Cute!" />
-		</form>
-	</div>
+  <div class="button-holder">
+    <form action="./cute" method="post">
+      <input type="hidden" name="photo" value="{{photo.name}}" />
+      <input type="submit" value="Cute!" name="like" />
+    </form>
+    <form action="./notcute" method="post">
+      <input type="hidden" name="photo" value="{{photo.name}}" />
+      <input type="submit" value="Not Cute!" name="dislike" />
+    </form>
+  </div>
 
-{{else}}
+  {{else}}
 
-	<h3>No more photos to vote on! Check out the <a href="./standings">standings</a>.</h3>
+  <h2 class="title-secondary">
+    No more photos to vote on! Upload more or check out the
+    <a href="./standings">standings</a>.
+  </h2>
 
-{{/if}}
+  {{/if}}
+</div>

@@ -1,3 +1,4 @@
 /.idea
 src/public/style/**/*.css.map
 src/public/style/**/*.css
+node_modules

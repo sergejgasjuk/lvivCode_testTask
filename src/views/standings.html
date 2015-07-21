@@ -1,22 +1,25 @@
-<nav>
-	<a href="./">Game</a>
-	<a class="active" href="./standings">Standings</a>
+<nav class="navigation">
+  <a href="./">Game</a>
+  <a class="active" href="./standings">Standings</a>
 </nav>
+<section class="standings">
 
-{{#if standings}}
+  {{#if standings}}
 
-	<ul>
+  <ul>
 
-		{{#each standings}}
-		
-		<li>
-			<img src="photos/{{name}}" alt="Cat picture thumbnail" />
-			<p class="up">{{this.likes}}</p>
-			<p class="down">{{this.dislikes}}</p>
-		</li>
+    {{#each standings}}
 
-		{{/each}}
+    <li>
+      <img class="thumbnail" src="photos/{{name}}" alt="{{name}}" />
+      <span class="vote up">{{this.likes}}</span>
+      <span class="vote down">{{this.dislikes}}</span>
+    </li>
 
-	</ul>
+    {{/each}}
 
-{{/if}}
+  </ul>
+
+  {{/if}}
+</section>
+

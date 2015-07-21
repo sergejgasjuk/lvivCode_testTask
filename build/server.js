@@ -72,12 +72,12 @@ app.use((0, _multer2["default"])({
 // Routes
 app.post("/", function (req, res) {
   console.log(req.files);
-  if (!req.files.userPhoto) {
+  if (!req.files.userImage) {
     res.send("Please choose photo.");
   }
 
   if (imgUploadFinished) {
-    var file = req.files.userPhoto;
+    var file = req.files.userImage;
     var photosOnDisk = _fs2["default"].readdirSync(__dirname + "/public/photos");
 
     photosOnDisk.forEach(function (photo) {
