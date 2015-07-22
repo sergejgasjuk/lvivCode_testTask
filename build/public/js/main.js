@@ -29,4 +29,11 @@ $(imageUpload).on('change', function (e) {
   }
 });
 
+$('#commentForm').on('submit', function (e) {
+  //e.preventDefault();
+  var comment = $(this).find('[name=\'comment\']').val();
+  var photo = $(this).find('[name=\'photo\']').val();
+  $.post('/comment', { comment: comment, photo: photo });
+});
+
 },{"jquery":1}]},{},[2]);

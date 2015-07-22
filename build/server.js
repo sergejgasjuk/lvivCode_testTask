@@ -138,6 +138,7 @@ app.post("*", function (req, res, next) {
 
 app.post("/notcute", vote);
 app.post("/cute", vote);
+app.post("/comment", addComment);
 
 function vote(req, res) {
   var fieldToUpdate = {
@@ -150,6 +151,19 @@ function vote(req, res) {
       photos.update(found[0], { $inc: fieldToUpdate[req.path] });
       users.update({ ip: req.ip }, { $addToSet: { votes: found[0]._id } }, function () {
         return res.redirect("../");
+      });
+    } else {
+      res.redirect("../");
+    }
+  });
+}
+
+function addComment(req, res) {
+  photos.find({ name: req.body.photo }, function (err, found) {
+    console.log(req.body.comment);
+    if (found.length === 1) {
+      photos.update(found[0], { $inc: { "comments.amount": 1 }, $push: { "comments.list": req.body.comment } }, function () {
+        res.render("home", { photo: found[0] });
       });
     } else {
       res.redirect("../");

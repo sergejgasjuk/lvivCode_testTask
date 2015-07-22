@@ -26,7 +26,11 @@ photosOnDisk.forEach(function (photo) {
   return photos.insert({
     name: photo,
     likes: 0,
-    dislikes: 0
+    dislikes: 0,
+    comments: {
+      amount: 0,
+      list: []
+    }
   });
 });
 

@@ -20,4 +20,11 @@ $(imageUpload).on("change", function(e){
   }
 });
 
+$("#commentForm").on("submit", function(e){
+  //e.preventDefault();
+  let comment = $(this).find("[name='comment']").val();
+  let photo = $(this).find("[name='photo']").val();
+  $.post('/comment', {comment, photo});
+});
+
 
