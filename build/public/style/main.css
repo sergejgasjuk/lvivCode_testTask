@@ -55,7 +55,7 @@ a:hover {
     text-transform: uppercase;
     border-radius: 3px;
     background: #f2f2f2;
-    transition: color 0.6s, background 0.3s; }
+    transition: color 0.5s, background 0.2s; }
     .navigation a:hover,
     .navigation a.active {
       color: #fff;
@@ -80,12 +80,71 @@ a:hover {
   .img-upload label[for="userImage"] span {
     color: #e1ba4c; }
 
-.image-display {
+.photo-list {
+  width: 640px;
+  margin: 50px auto; }
+  .photo-list:before, .photo-list:after {
+    content: "";
+    display: table; }
+  .photo-list:after {
+    clear: both; }
+  .photo-list .photo-item {
+    display: block;
+    float: left;
+    width: 150px;
+    height: 120px;
+    padding: 10px;
+    margin: 0 10px 10px 0;
+    overflow: hidden;
+    background-color: #f6f6f6;
+    border-radius: 3px;
+    word-wrap: break-word;
+    transition: all 0.2s ease-in-out; }
+    .photo-list .photo-item:hover {
+      transform: scale(1.1);
+      background-color: #c3c3c3; }
+    .photo-list .photo-item > img {
+      display: block;
+      width: 100%;
+      height: 100%; }
+
+.img-modal {
+  display: none; }
+  .img-modal .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 1000; }
+  .img-modal .modal-body {
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin: auto;
+    padding: 25px;
+    border-radius: 3px;
+    background-color: white;
+    z-index: 1200; }
+  .img-modal .modal-close {
+    position: absolute;
+    right: -18px;
+    top: -18px;
+    height: 40px;
+    width: 40px;
+    font: bold 18px/42px arial;
+    text-align: center;
+    background: #fff;
+    border-radius: 100%;
+    box-shadow: 0px 0px 5px #000;
+    cursor: pointer; }
+
+.modal-content {
   text-align: center; }
-  .image-display img {
+  .modal-content img {
     display: inline-block;
-    max-width: 350px;
-    max-height: 350px;
+    max-width: 450px;
     margin: 0 0 15px; }
 
 .button-holder > form {
@@ -103,7 +162,7 @@ a:hover {
   cursor: pointer;
   background: url("../images/sprite.svg") no-repeat 0 0;
   text-indent: -9999px;
-  transition: all 0.3s; }
+  transition: all 0.2s; }
   .button-holder input:active {
     position: relative;
     bottom: -1px; }
@@ -157,5 +216,5 @@ a:hover {
         top: 85px;
         background-position: 17px -192px; }
   .standings .thumbnail {
-    max-width: 155px;
+    max-width: 150px;
     border-radius: 3px; }

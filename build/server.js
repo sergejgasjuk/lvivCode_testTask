@@ -53,11 +53,12 @@ app.use((0, _multer2["default"])({
     return filename + Date.now();
   },
   onFileUploadStart: function onFileUploadStart(file) {
-    if (!file && file.mimetype !== "image/jpg" && file.mimetype !== "image/jpeg" && file.mimetype !== "image/png") {
+    if (file.mimetype === "image/jpg" || file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+      console.log(file.originalname + " is starting ...");
+    } else {
+      console.log("Wrong mimeType!");
       return false;
     }
-
-    console.log(file.originalname + " is starting ...");
   },
   onFileSizeLimit: function onFileSizeLimit(file) {
     console.log("Failed: ", file.originalname);
@@ -70,12 +71,7 @@ app.use((0, _multer2["default"])({
 }));
 
 // Routes
-app.post("/", function (req, res) {
-  console.log(req.files);
-  if (!req.files.userImage) {
-    res.send("Please choose photo.");
-  }
-
+app.post("/imgUpload", function (req, res) {
   if (imgUploadFinished) {
     var file = req.files.userImage;
     var photosOnDisk = _fs2["default"].readdirSync(__dirname + "/public/photos");
@@ -84,16 +80,23 @@ app.post("/", function (req, res) {
       return photos.insert({
         name: photo,
         likes: 0,
-        dislikes: 0
+        dislikes: 0,
+        comments: {
+          amount: 0,
+          list: []
+        }
       });
     });
 
     photos.find({ name: "" + file.name }, function (err, docs) {
-      res.render("home", { photo: docs[0] });
-      //res.end();
+      if (err || !docs) {
+        res.send("Error!");
+      } else {
+        res.send(docs[0]);
+      }
     });
   } else {
-    res.send("Couln't load the image");
+    res.send("Couldn't load the image");
   }
 });
 
@@ -111,13 +114,19 @@ app.get("/", function (req, res) {
         return votedOn.indexOf(photo._id) == -1;
       });
 
-      if (notVotedOn.length > 0) {
-        imageToShow = notVotedOn[Math.floor(Math.random() * notVotedOn.length)];
-      }
+      //if(notVotedOn.length > 0){
+      //  imageToShow = notVotedOn[Math.floor(Math.random() * notVotedOn.length)];
+      //}
 
-      res.render("home", { photo: imageToShow });
+      res.render("home", { photos: notVotedOn });
     });
   });
+});
+
+app.post("/imgModal", function (req, res) {
+  if (req.body.name) {
+    res.render("imgModal", { layout: false, name: req.body.name });
+  }
 });
 
 app.get("/standings", function (req, res) {
@@ -148,7 +157,7 @@ function vote(req, res) {
 
   photos.find({ name: req.body.photo }, function (err, found) {
     if (found.length === 1) {
-      photos.update(found[0], { $inc: fieldToUpdate[req.path] });
+      photos.update({ _id: found[0]._id }, { $inc: fieldToUpdate[req.path] });
       users.update({ ip: req.ip }, { $addToSet: { votes: found[0]._id } }, function () {
         return res.redirect("../");
       });
@@ -162,7 +171,7 @@ function addComment(req, res) {
   photos.find({ name: req.body.photo }, function (err, found) {
     console.log(req.body.comment);
     if (found.length === 1) {
-      photos.update(found[0], { $inc: { "comments.amount": 1 }, $push: { "comments.list": req.body.comment } }, function () {
+      photos.update({ _id: found[0]._id }, { $inc: { "comments.amount": 1 }, $push: { "comments.list": req.body.comment } }, function () {
         res.render("home", { photo: found[0] });
       });
     } else {

@@ -4,6 +4,15 @@
 
 $font: 'Open Sans', Arial, Helvetica, sans-serif;
 
+@mixin clearfix {
+  &:before, &:after {
+    content: "";
+    display: table;
+  }
+
+  &:after { clear: both; }
+}
+
 body {
   margin: 0;
   padding: 0 0 100px;
@@ -55,7 +64,7 @@ a:hover {
     text-transform: uppercase;
     border-radius: 3px;
     background: #f2f2f2;
-    transition: color .6s, background .3s;
+    transition: color .5s, background .2s;
 
     &:hover,
     &.active {
@@ -89,13 +98,83 @@ a:hover {
   }
 }
 
-.image-display {
+$photo-item-width: 150px;
+.photo-list {
+  width: ($photo-item-width * 4) + (10 * 4);
+  margin: 50px auto;
+  @include clearfix;
+
+  .photo-item {
+    display: block;
+    float: left;
+    width: $photo-item-width;
+    height: 120px;
+    padding: 10px;
+    margin: 0 10px 10px 0;
+    overflow: hidden;
+    background-color: #f6f6f6;
+    border-radius: 3px;
+    word-wrap: break-word;
+    transition: all .2s ease-in-out;
+
+    &:hover {
+      transform: scale(1.1);
+      background-color: darken(#f6f6f6, 20);
+    }
+
+    >img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
+
+.img-modal {
+  display: none;
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left:0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(#000, 0.8);
+    z-index: 1000;
+  }
+
+  .modal-body {
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin: auto;
+    padding: 25px;
+    border-radius: 3px;
+    background-color: white;
+    z-index: 1200;
+  }
+
+  .modal-close {
+    position: absolute;
+    right: -18px;
+    top: -18px;
+    height: 40px;
+    width: 40px;
+    font: bold 18px/42px arial;
+    text-align: center;
+    background: #fff;
+    border-radius: 100%;
+    box-shadow: 0px 0px 5px #000;
+    cursor: pointer
+  }
+}
+
+.modal-content {
   text-align: center;
 
   img {
     display: inline-block;
-    max-width: 350px;
-    max-height: 350px;
+    max-width: 450px;
     margin: 0 0 15px;
   }
 }
@@ -115,7 +194,7 @@ a:hover {
     cursor: pointer;
     background: url('../images/sprite.svg') no-repeat 0 0;
     text-indent: -9999px;
-    transition: all .3s;
+    transition: all .2s;
 
     &:active {
       position: relative;
@@ -192,7 +271,7 @@ a:hover {
   }
 
   .thumbnail {
-    max-width: 155px;
+    max-width: 150px;
     border-radius: 3px;
   }
 }

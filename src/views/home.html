@@ -5,47 +5,29 @@
 <div class="img-upload">
     <form id="uploadForm"
           enctype="multipart/form-data"
-          action="./"
+          action="./imgUpload"
           method="post"
           >
       <label for="userImage">Upload Image</label>
-      <input id="userImage" class="hidden" type="file" name="userImage"/>
-      <input class="hidden" type="submit" value="Go!" name="submit">
+      <input id="userImage" class="hidden" type="file" name="userImage" />
+      <input id="imgUploadSubmit" class="hidden" type="submit" value="Go!" name="submit">
     </form>
 </div>
-<div class="image-display">
+<div class="photo-list">
+  {{#if photos}}
 
-  {{#if photo}}
+    {{#each photos}}
 
-  <img src="photos/{{photo.name}}" alt="{{photo.name}}" />
-  <div> comments: <span>{{photo.comments.amount}}</span></div>
-  {{#if photo.comments.list.length}}
-    <div>FUCK YEAH!</div>
-  {{/if}}
-  <div class="comments">
-    <form id="commentForm" action="/comment" method="post">
-      <textarea id="commentField" name="comment"></textarea>
-      <input type="hidden" name="photo" value="{{photo.name}}" />
-      <input type="submit" value="Post" name="post" />
-    </form>
-  </div>
-  <div class="button-holder">
-    <form action="./cute" method="post">
-      <input type="hidden" name="photo" value="{{photo.name}}" />
-      <input type="submit" value="Cute!" name="like" />
-    </form>
-    <form action="./notcute" method="post">
-      <input type="hidden" name="photo" value="{{photo.name}}" />
-      <input type="submit" value="Not Cute!" name="dislike" />
-    </form>
-  </div>
+      <a class="photo-item" href="#" data-name="{{name}}">
+        <img src="photos/{{name}}" alt="{{name}}"/>
+      </a>
 
+    {{/each}}
   {{else}}
-
-  <h2 class="title-secondary">
-    No more photos to vote on! Upload more or check out the
-    <a href="./standings">standings</a>.
-  </h2>
-
+    <h2 class="title-secondary">
+      No more photos to vote on! Upload more or check out the
+      <a href="./standings">standings</a>.
+    </h2>
   {{/if}}
 </div>
+
