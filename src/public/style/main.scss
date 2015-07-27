@@ -140,18 +140,29 @@ $photo-item-width: 150px;
     bottom: 0;
     right: 0;
     background-color: rgba(#000, 0.8);
-    z-index: 1000;
+    z-index: 1040;
+  }
+
+  .modal-dialog {
+    position: fixed;
+    top: 0;
+    left:0;
+    bottom: 0;
+    right: 0;
+    background: transparent;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 1050;
   }
 
   .modal-body {
-    position: fixed;
-    left: 0;
-    top: 0;
-    margin: auto;
+    position: relative;
+    display: table;
+    margin: 30px auto;
     padding: 25px;
     border-radius: 3px;
     background-color: white;
-    z-index: 1200;
+    z-index: 1100;
   }
 
   .modal-close {

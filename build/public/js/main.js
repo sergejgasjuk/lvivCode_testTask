@@ -82,28 +82,24 @@ $("body").on("click", ".photo-item", function (e) {
     },
     success: function success(data) {
       $("body").append(data);
-
-      var modalBody = $("#imgModal").find(".modal-body");
-      $("#imgModal").show();
-      $(modalBody).css({
-        "top": $(window).height() / 2 - $(modalBody).height() / 2,
-        "left": $(window).width() / 2 - $(modalBody).width() / 2
-      });
+      if ($(imageUpload).length) {
+        $("#imgModal").show();
+      }
     }
   });
 });
 
-$("body").on("click", ".modal-overlay, #imgModal .modal-close", closeImageModal);
+$("body").on("click", "#imgModal .modal-dialog, #imgModal .modal-close", function () {
+  if ($("body").find("#imgModal").length) {
+    $("#imgModal").remove();
+  }
+}).on("click", "#imgModal .modal-body", function (e) {
+  e.stopPropagation();
+});
 
 function clearImgUploadForm() {
   if ($(imageUpload).length) {
     $(imageUpload).closest("form").get(0).reset();
-  }
-}
-
-function closeImageModal() {
-  if ($("body").find("#imgModal").length) {
-    $("#imgModal").remove();
   }
 }
 

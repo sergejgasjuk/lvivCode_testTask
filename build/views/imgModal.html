@@ -1,26 +1,29 @@
 <div id="imgModal" class="img-modal">
   <div class="modal-overlay"></div>
-  <div class="modal-body">
-    <div class="modal-close">X</div>
-    <div class="modal-content">
-      <img src="photos/{{name}}" alt="{{name}}" />
+  <div class="modal-dialog">
+    <div class="modal-body">
+      <div class="modal-close">X</div>
+      <div class="modal-content">
+        <img src="photos/{{name}}" alt="{{name}}" />
 
-      <!--<form id="commentForm" action="/comment" method="post">-->
-      <!--<textarea id="commentField" name="comment"></textarea>-->
-      <!--<input type="hidden" name="photo" value="{{photo.name}}" />-->
-      <!--<input type="submit" value="Post" name="post" />-->
-      <!--</form>-->
+        <!--<form id="commentForm" action="/comment" method="post">-->
+        <!--<textarea id="commentField" name="comment"></textarea>-->
+        <!--<input type="hidden" name="photo" value="{{photo.name}}" />-->
+        <!--<input type="submit" value="Post" name="post" />-->
+        <!--</form>-->
 
-      <div class="button-holder">
-        <form action="./cute" method="post">
-          <input type="hidden" name="photo" value="{{name}}" />
-          <input type="submit" value="Cute!" name="like" />
-        </form>
-        <form action="./notcute" method="post">
-          <input type="hidden" name="photo" value="{{name}}" />
-          <input type="submit" value="Not Cute!" name="dislike" />
-        </form>
+        <div class="button-holder">
+          <form action="./cute" method="post">
+            <input type="hidden" name="photo" value="{{name}}" />
+            <input type="submit" value="Cute!" name="like" />
+          </form>
+          <form action="./notcute" method="post">
+            <input type="hidden" name="photo" value="{{name}}" />
+            <input type="submit" value="Not Cute!" name="dislike" />
+          </form>
+        </div>
       </div>
     </div>
   </div>
+
 </div>

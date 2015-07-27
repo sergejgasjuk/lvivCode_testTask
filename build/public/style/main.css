@@ -117,16 +117,25 @@ a:hover {
     bottom: 0;
     right: 0;
     background-color: rgba(0, 0, 0, 0.8);
-    z-index: 1000; }
-  .img-modal .modal-body {
+    z-index: 1040; }
+  .img-modal .modal-dialog {
     position: fixed;
-    left: 0;
     top: 0;
-    margin: auto;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: transparent;
+    overflow-x: hidden;
+    overflow-y: auto;
+    z-index: 1050; }
+  .img-modal .modal-body {
+    position: relative;
+    display: table;
+    margin: 30px auto;
     padding: 25px;
     border-radius: 3px;
     background-color: white;
-    z-index: 1200; }
+    z-index: 1100; }
   .img-modal .modal-close {
     position: absolute;
     right: -18px;
