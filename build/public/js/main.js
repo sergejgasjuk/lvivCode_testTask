@@ -16,6 +16,7 @@ var imgUploadSubmit = $(imageUpload).siblings("input[name='submit']");
 // clear input value when page loads
 clearImgUploadForm();
 
+// file upload onchange handler
 $(imageUpload).on("change", function (e) {
   var value = undefined;
   var file = e.target.files[0];
@@ -34,6 +35,7 @@ $(imageUpload).on("change", function (e) {
   }
 });
 
+// file upload onsubmit handler
 $("#uploadForm").on("submit", function (e) {
   e.preventDefault();
 
@@ -58,16 +60,38 @@ $("#uploadForm").on("submit", function (e) {
       clearImgUploadForm();
     }
   });
+
   return false;
 });
 
-$("#commentForm").on("submit", function (e) {
-  //e.preventDefault();
+// comment form submit handler
+$("body").on("submit", "#commentForm", function (e) {
+  e.preventDefault();
+
   var comment = $(this).find("[name='comment']").val();
   var photo = $(this).find("[name='photo']").val();
-  $.post("/comment", { comment: comment, photo: photo });
+
+  if (comment.length < 1) {
+    alert("Field can't be empty");
+    return;
+  }
+
+  $.ajax({
+    url: $(this).attr("action"),
+    type: $(this).attr("method"),
+    data: { comment: comment, photo: photo },
+    error: function error(err) {
+      alert(err);
+    },
+    success: function success(data) {
+      alert(data);
+    }
+  });
+
+  return false;
 });
 
+// image modal open
 $("body").on("click", ".photo-item", function (e) {
   e.preventDefault();
 
@@ -89,6 +113,7 @@ $("body").on("click", ".photo-item", function (e) {
   });
 });
 
+// image modal close
 $("body").on("click", "#imgModal .modal-dialog, #imgModal .modal-close", function () {
   if ($("body").find("#imgModal").length) {
     $("#imgModal").remove();

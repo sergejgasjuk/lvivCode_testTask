@@ -4,26 +4,31 @@
     <div class="modal-body">
       <div class="modal-close">X</div>
       <div class="modal-content">
-        <img src="photos/{{name}}" alt="{{name}}" />
-
-        <!--<form id="commentForm" action="/comment" method="post">-->
-        <!--<textarea id="commentField" name="comment"></textarea>-->
-        <!--<input type="hidden" name="photo" value="{{photo.name}}" />-->
-        <!--<input type="submit" value="Post" name="post" />-->
-        <!--</form>-->
-
+        <img src="photos/{{photo.name}}" alt="{{photo.name}}" />
         <div class="button-holder">
           <form action="./cute" method="post">
-            <input type="hidden" name="photo" value="{{name}}" />
+            <input type="hidden" name="photo" value="{{photo.name}}" />
             <input type="submit" value="Cute!" name="like" />
           </form>
           <form action="./notcute" method="post">
-            <input type="hidden" name="photo" value="{{name}}" />
+            <input type="hidden" name="photo" value="{{photo.name}}" />
             <input type="submit" value="Not Cute!" name="dislike" />
+          </form>
+        </div>
+        <div class="comments-section">
+          <div class="comments-amount">Comments: <span>{{photo.comments.amount}}</span></div>
+          <form id="commentForm" action="./comment" method="post">
+            <fieldset>
+              <legend>Leave you comment: </legend>
+              <input type="hidden" name="photo" value="{{photo.name}}" />
+              <div>
+                <textarea id="commentField" name="comment" placeholder="Comment.."></textarea>
+                <input type="submit" value="Post" name="post" />
+              </div>
+            </fieldset>
           </form>
         </div>
       </div>
     </div>
   </div>
-
 </div>

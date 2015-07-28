@@ -69,7 +69,7 @@ app.post('/imgUpload', (req, res) => {
 
     photos.find({name: `${file.name}`}, (err, docs) => {
       if (err || !docs) {
-        res.send('Error!');
+        res.status(520).send("Error!");
       } else {
         res.send(docs[0]);
       }
@@ -83,7 +83,6 @@ app.get('/', (req, res) => {
   photos.find({}, (err, allPhotos) => {
     users.find({ip: req.ip}, (err, user) => {
       let votedOn = [];
-      let imageToShow = null;
 
       if(user.length === 1){
         votedOn = user[0].votes;
@@ -101,9 +100,25 @@ app.get('/', (req, res) => {
 });
 
 app.post('/imgModal', (req, res) => {
-  if (req.body.name) {
-    res.render('imgModal', {layout: false, name: req.body.name});
-  }
+  photos.find({name: req.body.name}, (err, found) => {
+    if (found) {
+      res.render('imgModal', {layout: false, photo: found[0]});
+    }
+  });
+});
+
+app.post('/comment', (req, res) => {
+  photos.find({name: req.body.photo }, (err, found) => {
+    if(found){
+      photos.update(
+        {_id: found[0]._id},
+        {$inc: {"comments.amount": 1}, $push: {"comments.list": req.body.comment}},
+        () => res.send(found[0]));
+    }
+    else {
+      res.status(520).send("Error!");
+    }
+  });
 });
 
 app.get('/standings', (req, res) => {
@@ -122,7 +137,6 @@ app.post('*', (req, res, next) => {
 
 app.post('/notcute', vote);
 app.post('/cute', vote);
-app.post('/comment', addComment);
 
 function vote(req, res){
   let fieldToUpdate = {
@@ -134,21 +148,6 @@ function vote(req, res){
     if(found.length === 1){
       photos.update({_id: found[0]._id}, {$inc: fieldToUpdate[req.path]});
       users.update({ip: req.ip}, {$addToSet: { votes: found[0]._id}}, () => res.redirect('../'));
-    }
-    else {
-      res.redirect('../');
-    }
-  });
-}
-
-function addComment(req, res) {
-  photos.find({name: req.body.photo }, (err, found) => {
-    console.log(req.body.comment);
-    if(found.length === 1){
-      photos.update(
-        {_id: found[0]._id},
-        {$inc: {"comments.amount": 1}, $push: {"comments.list": req.body.comment}},
-        () => {res.render('home', {photo: found[0]});});
     }
     else {
       res.redirect('../');

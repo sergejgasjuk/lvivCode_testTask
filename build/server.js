@@ -90,7 +90,7 @@ app.post("/imgUpload", function (req, res) {
 
     photos.find({ name: "" + file.name }, function (err, docs) {
       if (err || !docs) {
-        res.send("Error!");
+        res.status(520).send("Error!");
       } else {
         res.send(docs[0]);
       }
@@ -104,7 +104,6 @@ app.get("/", function (req, res) {
   photos.find({}, function (err, allPhotos) {
     users.find({ ip: req.ip }, function (err, user) {
       var votedOn = [];
-      var imageToShow = null;
 
       if (user.length === 1) {
         votedOn = user[0].votes;
@@ -124,9 +123,23 @@ app.get("/", function (req, res) {
 });
 
 app.post("/imgModal", function (req, res) {
-  if (req.body.name) {
-    res.render("imgModal", { layout: false, name: req.body.name });
-  }
+  photos.find({ name: req.body.name }, function (err, found) {
+    if (found) {
+      res.render("imgModal", { layout: false, photo: found[0] });
+    }
+  });
+});
+
+app.post("/comment", function (req, res) {
+  photos.find({ name: req.body.photo }, function (err, found) {
+    if (found) {
+      photos.update({ _id: found[0]._id }, { $inc: { "comments.amount": 1 }, $push: { "comments.list": req.body.comment } }, function () {
+        return res.send(found[0]);
+      });
+    } else {
+      res.status(520).send("Error!");
+    }
+  });
 });
 
 app.get("/standings", function (req, res) {
@@ -147,7 +160,6 @@ app.post("*", function (req, res, next) {
 
 app.post("/notcute", vote);
 app.post("/cute", vote);
-app.post("/comment", addComment);
 
 function vote(req, res) {
   var fieldToUpdate = {
@@ -160,19 +172,6 @@ function vote(req, res) {
       photos.update({ _id: found[0]._id }, { $inc: fieldToUpdate[req.path] });
       users.update({ ip: req.ip }, { $addToSet: { votes: found[0]._id } }, function () {
         return res.redirect("../");
-      });
-    } else {
-      res.redirect("../");
-    }
-  });
-}
-
-function addComment(req, res) {
-  photos.find({ name: req.body.photo }, function (err, found) {
-    console.log(req.body.comment);
-    if (found.length === 1) {
-      photos.update({ _id: found[0]._id }, { $inc: { "comments.amount": 1 }, $push: { "comments.list": req.body.comment } }, function () {
-        res.render("home", { photo: found[0] });
       });
     } else {
       res.redirect("../");
