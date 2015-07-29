@@ -133,11 +133,21 @@ app.post("/imgModal", function (req, res) {
 app.post("/comment", function (req, res) {
   photos.find({ name: req.body.photo }, function (err, found) {
     if (found) {
-      photos.update({ _id: found[0]._id }, { $inc: { "comments.amount": 1 }, $push: { "comments.list": req.body.comment } }, function () {
-        return res.send(found[0]);
+      var comment = { text: req.body.comment };
+
+      photos.update({ _id: found[0]._id }, { $inc: { "comments.amount": 1 }, $push: { "comments.list": comment } }, function () {
+        res.send(found[0]);
       });
     } else {
       res.status(520).send("Error!");
+    }
+  });
+});
+
+app.post("/commentsList", function (req, res) {
+  photos.find({ name: req.body.photo }, function (err, found) {
+    if (found) {
+      res.render("commentsList", { layout: false, comments: found[0].comments.list });
     }
   });
 });

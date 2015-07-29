@@ -110,13 +110,23 @@ app.post('/imgModal', (req, res) => {
 app.post('/comment', (req, res) => {
   photos.find({name: req.body.photo }, (err, found) => {
     if(found){
+      let comment = {text: req.body.comment};
+
       photos.update(
         {_id: found[0]._id},
-        {$inc: {"comments.amount": 1}, $push: {"comments.list": req.body.comment}},
-        () => res.send(found[0]));
+        {$inc: {"comments.amount": 1}, $push: {"comments.list": comment}},
+        () => {res.send(found[0])});
     }
     else {
       res.status(520).send("Error!");
+    }
+  });
+});
+
+app.post('/commentsList', (req, res) => {
+  photos.find({name: req.body.photo}, (err, found) => {
+    if (found) {
+      res.render('commentsList', {layout: false, comments: found[0].comments.list});
     }
   });
 });

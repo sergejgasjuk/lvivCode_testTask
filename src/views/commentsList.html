@@ -1,0 +1,16 @@
+{{#if comments}}
+
+  <div class="comments-list-box">
+    <div>Comments: </div>
+    <ul class="comments-list">
+
+      {{#each comments}}
+
+      <li>{{this.text}}</li>
+
+      {{/each}}
+
+    </ul>
+  </div>
+
+{{/if}}

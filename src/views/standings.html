@@ -3,22 +3,32 @@
   <a class="active" href="./standings">Standings</a>
 </nav>
 <section class="standings">
-
   {{#if standings}}
-
-  <ul>
 
     {{#each standings}}
 
-    <li>
-      <img class="thumbnail" src="photos/{{name}}" alt="{{name}}" />
-      <span class="vote up">{{this.likes}}</span>
-      <span class="vote down">{{this.dislikes}}</span>
-    </li>
+      <div class="standing-item">
+        <div class="thumbnail-box">
+          <img class="thumbnail" src="photos/{{name}}" alt="{{name}}" />
+          <span class="vote up">{{this.likes}}</span>
+          <span class="vote down">{{this.dislikes}}</span>
+        </div>
+        <div class="comments-section">
+
+          {{#if this.comments.amount}}
+
+            <a class="view-comments underline" data-photo="{{name}}" href="/">View all comments.</a>
+            <a class="hide-comments underline hidden" href="/">Hide comments.</a>
+
+          {{else}}
+
+            <div>No comments left yet.</div>
+
+          {{/if}}
+        </div>
+      </div>
 
     {{/each}}
-
-  </ul>
 
   {{/if}}
 </section>

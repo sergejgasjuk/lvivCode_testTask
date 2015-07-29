@@ -4,9 +4,6 @@ let imageUpload = $("#userImage");
 let imgUploadLabel = $(imageUpload).siblings("label");
 let imgUploadSubmit = $(imageUpload).siblings("input[name='submit']");
 
-// clear input value when page loads
-clearImgUploadForm();
-
 // file upload onchange handler
 $(imageUpload).on("change", function(e){
   let value;
@@ -33,6 +30,8 @@ $("#uploadForm").on("submit", function(e) {
   let formData = new FormData();
   let file = $(imageUpload)[0].files[0];
   formData.append('userImage', file);
+
+  if (!file) { return; }
 
   $.ajax({
     url: $(this).attr("action"),
@@ -63,8 +62,10 @@ $("#uploadForm").on("submit", function(e) {
 $("body").on("submit", "#commentForm", function(e) {
   e.preventDefault();
 
+  let commentAmount = $(this).siblings(".comments-amount").find("span");
   let comment = $(this).find("[name='comment']").val();
   let photo = $(this).find("[name='photo']").val();
+  let self = this;
 
   if (comment.length < 1) {
     alert('Field can\'t be empty');
@@ -72,6 +73,7 @@ $("body").on("submit", "#commentForm", function(e) {
   }
 
   $.ajax({
+    context: this,
     url: $(this).attr("action"),
     type: $(this).attr("method"),
     data: {comment, photo},
@@ -79,11 +81,59 @@ $("body").on("submit", "#commentForm", function(e) {
       alert(err);
     },
     success(data) {
-      alert(data)
+      $(commentAmount).text(+$(commentAmount).text() + 1);
+      $(this).find("[name='comment']").val('');
+      $(this).hide().siblings(".success").fadeIn(200);
     }
   });
 
   return false;
+});
+
+// show comment form
+$("body").on("click", "#showCommentForm", function(e) {
+  e.preventDefault();
+  $(this).parent().hide().siblings("#commentForm").fadeIn(200);
+});
+
+// view comments list
+$("body").on("click", ".view-comments", function(e) {
+  e.preventDefault();
+
+  if ($(this).siblings(".comments-list-box").length) {
+    $(this).siblings(".comments-list-box").show();
+    $(this).siblings(".hide-comments").show();
+    $(this).hide();
+    return false;
+  }
+
+  $.ajax({
+    context: this,
+    method: 'POST',
+    data: {
+      photo: $(this).attr("data-photo")
+    },
+    url: "/commentsList",
+    error(err) {
+      alert(err);
+    },
+    success(data) {
+      $(this).parents(".comments-section").append(data);
+      $(this).siblings(".hide-comments").show();
+      $(this).hide();
+    }
+  });
+});
+
+// hide comments list
+$("body").on("click", ".hide-comments", function(e) {
+  e.preventDefault();
+
+  if ($(this).siblings(".comments-list-box").length) {
+    $(this).siblings(".comments-list-box").hide();
+    $(this).siblings(".view-comments").show();
+    $(this).hide();
+  }
 });
 
 // image modal open
