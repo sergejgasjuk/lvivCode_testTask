@@ -54,10 +54,14 @@ $("#uploadForm").on("submit", function (e) {
       alert(err);
     },
     success: function success(data) {
-      var image = "\n                  <a class=\"photo-item\" href=\"#\" data-name=\"" + data.name + "\">\n                    <img src=\"photos/" + data.name + "\" alt=\"" + data.name + "\"/>\n                  </a>\n                  ";
-      $(".photo-list").append(image);
+      var item = "\n                  <a class=\"photo-item\" href=\"#\" data-name=\"" + data.name + "\">\n                    <img src=\"photos/" + data.name + "\" alt=\"" + data.name + "\"/>\n                  </a>\n                  ";
+      $(".photo-list").append(item);
       $(imgUploadLabel).text("Upload Image");
       $(imgUploadSubmit).addClass("hidden");
+      if ($(".photo-list").find(".title-secondary").length) {
+        $(".photo-list").find(".title-secondary").remove();
+      }
+
       clearImgUploadForm();
     }
   });

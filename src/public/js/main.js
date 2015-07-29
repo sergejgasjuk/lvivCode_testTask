@@ -43,14 +43,18 @@ $("#uploadForm").on("submit", function(e) {
       alert(err);
     },
     success(data) {
-      let image = `
+      let item = `
                   <a class="photo-item" href="#" data-name="${data.name}">
                     <img src="photos/${data.name}" alt="${data.name}"/>
                   </a>
                   `;
-      $(".photo-list").append(image);
+      $(".photo-list").append(item);
       $(imgUploadLabel).text("Upload Image");
       $(imgUploadSubmit).addClass("hidden");
+      if ($(".photo-list").find(".title-secondary").length) {
+        $(".photo-list").find(".title-secondary").remove();
+      }
+
       clearImgUploadForm();
     }
   });
